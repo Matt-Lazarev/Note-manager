@@ -1,0 +1,110 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration system</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+          crossorigin="anonymous">
+</head>
+
+<style>
+    body {
+        margin-top: 5px;
+    }
+    nav {
+        margin-bottom: 15px;
+    }
+    .error_block {
+        color: red;
+    }
+</style>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <span class="navbar-brand">Menu</span>
+        <div class="collapse navbar-collapse row" id="navbarNav">
+            <div class="col-auto me-auto">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/login}">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/register}">Register</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<body>
+<div class="container justify-content-center card col-sm-6">
+
+    <h3 class="text-center">Registration form</h3>
+
+    <form th:action="@{/register}" th:object = "${request}" th:method="post">
+        <div class="form-group mb-3">
+            <label> Firstname</label>
+
+            <div class="error_block" th:if="${#fields.hasErrors('firstname')}"
+                 th:errors="*{firstname}">
+                Error
+            </div>
+
+            <input type="text"
+                   placeholder="Enter firstname"
+                   th:field="*{firstname}"
+                   class = "form-control">
+        </div>
+
+        <div class="form-group mb-3 mt-3">
+            <div class="error_block" th:if="${#fields.hasErrors('lastname')}"
+                 th:errors="*{lastname}">
+                Error
+            </div>
+            <label> Lastname </label>
+            <input type="text"
+                   placeholder="Enter lastname"
+                   th:field="*{lastname}"
+                   class = "form-control">
+        </div>
+
+        <div class="form-group mb-3 mt-3">
+            <label> Login </label>
+
+            <div class="error_block" th:if="${#fields.hasErrors('login')}"
+                 th:errors="*{login}">
+                Error
+            </div>
+            <div th:if="${not_unique_login == 'true'}" class="error_block">
+                Login '<span th:text="${login}"/>' is already in use.
+            </div>
+
+            <input type="text"
+                   placeholder="Enter login"
+                   th:field="*{login}"
+                   class = "form-control">
+        </div>
+
+        <div class="form-group mb-3 mt-3">
+            <label> Password </label>
+
+            <div class="error_block" th:if="${#fields.hasErrors('password')}"
+                 th:errors="*{password}">
+                Error
+            </div>
+
+            <input type="password"
+                   placeholder="Enter password"
+                   th:field="*{password}"
+                   class = "form-control">
+        </div>
+
+        <div class="box-footer mb-1 mt-3">
+            <button type="submit" class="btn btn-primary">Register</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>

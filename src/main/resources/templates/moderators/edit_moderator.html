@@ -1,0 +1,85 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Moderator editor</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+          crossorigin="anonymous">
+</head>
+<body>
+
+<style>
+    body {
+        margin-top: 5px;
+    }
+    .error_block {
+        color: red;
+    }
+</style>
+
+<div class="container justify-content-center card col-sm-6">
+
+    <h3 class="text-center">Moderator edit form</h3>
+
+    <form th:action="@{/api/moderators/edit/{id}(id=${user.id})}" th:object="${user}" th:method="put">
+        <div class="form-group mb-3">
+            <label> Firstname</label>
+            <div class="error_block" th:if="${#fields.hasErrors('firstname')}"
+                 th:errors="*{firstname}">
+                Error
+            </div>
+            <input type="text"
+                   placeholder="Enter firstname"
+                   th:field="*{firstname}"
+                   class="form-control">
+        </div>
+
+        <div class="form-group mb-3 mt-3">
+            <label> Lastname </label>
+            <div class="error_block" th:if="${#fields.hasErrors('lastname')}"
+                 th:errors="*{lastname}">
+                Error
+            </div>
+            <input type="text"
+                   placeholder="Enter lastname"
+                   th:field="*{lastname}"
+                   class="form-control">
+        </div>
+
+        <div class="form-group mb-3 mt-3">
+            <label> Login </label>
+            <input type="text"
+                   placeholder="Enter login"
+                   th:field="*{login}"
+                   class="form-control"
+                   disabled>
+        </div>
+
+        <div class="form-group mb-3 mt-3">
+            <label> Password </label>
+            <div class="error_block" th:if="${#fields.hasErrors('password')}"
+                 th:errors="*{password}">
+                Error
+            </div>
+            <input type="password"
+                   placeholder="Enter password"
+                   th:field="*{password}"
+                   class="form-control">
+        </div>
+
+        <div class="form-group mb-3 mt-3" sec:authorize="hasAnyRole('ROLE_OWNER', 'ROLE_ADMIN')">
+            <label> Role: <br>
+                <input type="radio" name="role" value="ADMIN" th:field="*{role}"> Admin <br>
+                <input type="radio" name="role" value="MODERATOR" th:field="*{role}"> Moderator <br>
+                <input type="radio" name="role" value="USER" th:field="*{role}"> User <br>
+            </label>
+        </div>
+
+        <div class="box-footer mb-1 mt-3">
+            <button type="submit" class="btn btn-primary">Update</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>
